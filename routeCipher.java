@@ -11,30 +11,58 @@ public class routeCipher {
 		{
 			for(int j = 0; j < x; j++)
 			{
-				if(pos > code.length())
+				if(pos > code.length()-1)
 				{
-					mat[i][j] = routeCipher.randLetter();
+					mat[j][i] = routeCipher.randLetter();
 				}
 				else
 				{
-					mat[i][j] = code.substring(pos, pos + 1);
+					mat[j][i] = code.substring(pos, pos + 1);
 				}
 				pos++;
 			}
 		}
+		
+		for(int i = 0; i < x; i++)
+		{
+			for(int j = 0; j < y; j++)
+			{
+				out += mat[i][j];
+			}
+		}
+		
 		return out;
 	}
 	
 	public static String randLetter()
 	{
 		String[] alp = "abcdefghijklmnopqrstuvwxyz".toUpperCase().split("");
-		return alp[(int)Math.random() * 26];
+		return alp[(int)(Math.random() * 26)];
 	}
 	
 	public static String decode(String code, int x, int y)
 	{
 		String[][] mat = new String[x][y];
 		String out = "";
+		
+		int pos = 0;
+		for(int i = 0; i < x; i++)
+		{
+			for(int j = 0; j < y; j++)
+			{
+				mat[i][j] = code.substring(pos, pos + 1);
+				pos++;
+			}
+		}
+		
+		for(int i = 0; i < y; i++)
+		{
+			for(int j = 0; j < x; j++)
+			{
+				out += mat[j][i];
+			}
+		}
+		
 		return out;
 	}
 	
@@ -52,7 +80,7 @@ public class routeCipher {
 		String code = sc.next();
 		while(true)
 		{
-			if(code.length() < x * y)
+			if(code.length() <= x * y)
 				break;
 			else
 			{
@@ -60,7 +88,7 @@ public class routeCipher {
 				code = sc.next();
 			}
 		}
-		code = routeCipher.encode(sc.next(), x, y);
+		code = routeCipher.encode(code, x, y).toUpperCase();
 		System.out.println(code);
 		System.out.println(routeCipher.decode(code, x, y));
 	}
